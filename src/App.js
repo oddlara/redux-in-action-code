@@ -1,33 +1,45 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createTask, changeStatus } from "./actions";
+import { createTask, updateTask, fetchTasks } from "./actions";
 import TasksPage from "./components/TasksPage";
+import FlashMessage from "./components/FlashMessage";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.dispatch(fetchTasks());
+  }
+
   onCreateTask = ({ title, description }) => {
     this.props.dispatch(createTask({ title, description }));
   };
 
-  onStatusChange = ( id, status ) => {
-    this.props.dispatch(changeStatus(id, { status }));
+  onStatusChange = (id, status) => {
+    this.props.dispatch(updateTask(id, { status }));
   };
 
   render() {
     return (
-      <div className="main-content">
-        <TasksPage
-          tasks={this.props.tasks}
-          onCreateTask={this.onCreateTask}
-          onStatusChange={this.onStatusChange}
-        />
+      <div className="container">
+        {this.props.error && <FlashMessage message={this.props.error} />}
+        <div className="main-content">
+          <TasksPage
+            tasks={this.props.tasks}
+            onCreateTask={this.onCreateTask}
+            onStatusChange={this.onStatusChange}
+            isLoading={this.props.isLoading}
+          />
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
+  const { tasks, isLoading, error } = state.tasks;
   return {
-    tasks: state.tasks,
+    tasks,
+    isLoading,
+    error,
   };
 };
 

@@ -43,9 +43,7 @@ class TasksPage extends Component {
     this.setState({ showNewCardForm: !this.state.showNewCardForm });
   }
   renderTaskLists() {
-      const  { tasks }  = this.props;
-      const statusTasks = tasks.filter(task => task.status === "In Progress");
-      console.log(statusTasks);
+      const  tasks  = this.props.tasks;
       return TASK_STATUSES.map(status => {
           const statusTasks = tasks.filter(task => task.status === status);
           return (
@@ -59,6 +57,13 @@ class TasksPage extends Component {
   }
 
   render() {
+    if(this.props.isLoading){
+      return (
+        <div className="tasks-loading">
+          Loading...
+        </div>
+      );
+    }
     return (
         <div className="task-list">
           <div className="task-list-header">
