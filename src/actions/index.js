@@ -47,8 +47,8 @@ export function updateTaskSucceeded(task) {
       dispatch(fetchTasksStarted());
       api.fetchTasks().then(resp => {
         setTimeout(() => {
-          //dispatch(fetchTasksSucceeded(resp.data));
-          throw new Error('Oh noes!Hi mom');
+          dispatch(fetchTasksSucceeded(resp.data));
+          //throw new Error('Oh noes!Hi mom');
         }, 2000);
       })
       .catch(err => {
