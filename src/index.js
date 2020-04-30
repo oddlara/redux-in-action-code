@@ -7,6 +7,8 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import logger from './middleware/logger';
+import analytics from './middleware/analytics';
+import apiMiddleware from './middleware/api';
 import tasksReducer from './reducers'
 import * as serviceWorker from './serviceWorker';
 
@@ -18,7 +20,7 @@ const rootReducer = (state = {}, action) => {
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk, logger))
+  composeWithDevTools(applyMiddleware(thunk, apiMiddleware, logger, analytics))
 );
 
 if(module.hot) {

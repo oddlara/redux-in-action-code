@@ -21,19 +21,19 @@
     {
       "title": "new task",
       "description": "this is a test!",
-      "status": "Unstarted ",
+      "status": "Unstarted",
       "id": 4
     },
     {
       "title": "this is another test",
       "description": "for learning react!",
-      "status": "Unstarted ",
+      "status": "Unstarted",
       "id": 5
     },
     {
       "title": "this is another task",
       "description": "for testing",
-      "status": "Unstarted ",
+      "status": "Unstarted",
       "id": 6
     },
     {
@@ -41,6 +41,36 @@
       "description": "one two tree",
       "status": "Unstarted",
       "id": 7
+    },
+    {
+      "title": "test",
+      "description": "testinnnn",
+      "status": "Unstarted",
+      "id": 8
+    },
+    {
+      "title": "this is a test",
+      "description": "testinn",
+      "status": "Unstarted",
+      "id": 9
+    },
+    {
+      "title": "this is a test",
+      "description": "tbh ",
+      "status": "Unstarted",
+      "id": 10
+    },
+    {
+      "title": "this is a test",
+      "description": "aahhhh",
+      "status": "Unstarted",
+      "id": 11
+    },
+    {
+      "title": "Create tinder for tinder",
+      "description": "funny isnt it ",
+      "status": "Unstarted",
+      "id": 12
     }
   ]
 }

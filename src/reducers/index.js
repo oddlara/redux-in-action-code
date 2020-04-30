@@ -15,7 +15,7 @@ export default function tasks(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        tasks: action.payload.tasks,
+        tasks: action.payload.data,
       };
     }
     case "FETCH_TASKS_FAILED": {
@@ -25,11 +25,25 @@ export default function tasks(state = initialState, action) {
         error: action.payload.error,
       };
     }
+    case "CREATE_TASK_STARTED": {
+      return {
+        ...state,
+        isLoading: true,
+      }
+    }
     case "CREATE_TASK_SUCCEEDED": {
       return {
         ...state,
-        tasks: state.tasks.concat(action.payload.task),
+        tasks: state.tasks.concat(action.payload.data),
+        isLoading: false,
       };
+    }
+    case "CREATE_TASK_FAILED": {
+      return { 
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      }
     }
     case "UPDATE_TASK_SUCCEEDED": {
       const { payload } = action;
