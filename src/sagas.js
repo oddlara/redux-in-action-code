@@ -23,6 +23,13 @@ function* fetchTasks() {
 }
 
 function* takeLatestById(actionType, saga) {
+	/** 
+	 * This can be useful when we're dealing with managin of elements 
+	 * In this case, these are Tasks, but they can be orders, or any type of element in a database
+	 * not independent processes in the app. 
+	 * This works to create independent processes for every element and avoid applying 
+	 * an action two times (or more) on an element
+	*/
   //here our process lives
   const channelsMap = {}; //first creates the channel storage
   while (true) {
