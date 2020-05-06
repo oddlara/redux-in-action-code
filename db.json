@@ -3,44 +3,23 @@
     {
       "id": 1,
       "title": "Learn Redux",
-      "descrpiton": "The store, actions, and reducers, oh myyy!",
-      "status": "In Progress"
+      "description": "The store, actions, and reducers, oh myyy!",
+      "status": "Unstarted",
+      "timer": 0
     },
     {
       "id": 2,
       "title": "Call The Rock",
-      "descrpiton": "Just call him",
-      "status": "Unstarted"
+      "description": "Just call him",
+      "status": "In Progress",
+      "timer": 14
     },
     {
       "id": 3,
       "title": "Create Tinder for Food",
-      "descrpiton": "Just code it. ",
-      "status": "In Progress"
-    },
-    {
-      "title": "new task",
-      "description": "this is a test!",
-      "status": "Unstarted ",
-      "id": 4
-    },
-    {
-      "title": "this is another test",
-      "description": "for learning react!",
-      "status": "Unstarted ",
-      "id": 5
-    },
-    {
-      "title": "this is another task",
-      "description": "for testing",
-      "status": "Unstarted ",
-      "id": 6
-    },
-    {
-      "title": "this is the last test",
-      "description": "one two tree",
-      "status": "Unstarted",
-      "id": 7
+      "description": "Just code it. ",
+      "status": "In Progress",
+      "timer": 79
     }
   ]
 }

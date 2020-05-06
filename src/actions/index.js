@@ -42,40 +42,52 @@ export function updateTaskSucceeded(task) {
   };
 }
 
-  export function fetchTasks() {
-    return (dispatch) => {
-      dispatch(fetchTasksStarted());
-      api.fetchTasks().then(resp => {
-        setTimeout(() => {
-          dispatch(fetchTasksSucceeded(resp.data));
-          //throw new Error('Oh noes!Hi mom');
-        }, 2000);
-      })
-      .catch(err => {
-        dispatch(fetchTasksFailed(err.message));
-      });
-    };
-  }
+// export function fetchTasks() {
+//   return (dispatch) => {
+//     dispatch(fetchTasksStarted());
+//     api.fetchTasks().then(resp => {
+//       setTimeout(() => {
+//         dispatch(fetchTasksSucceeded(resp.data));
+//         //throw new Error('Oh noes!Hi mom');
+//       }, 2000);
+//     })
+//     .catch(err => {
+//       dispatch(fetchTasksFailed(err.message));
+//     });
+//   };
+// }
 
-  export function createTask({ title, description, status = "Unstarted" }) {
-    return (dispatch) => {
-      api.createTask({ title, description, status }).then((resp) => {
-        dispatch(createTaskSucceeded(resp.data));
-      });
-    };
-  }
+export function createTask({ title, description, status = "Unstarted" }) {
+  return (dispatch) => {
+    api.createTask({ title, description, status }).then((resp) => {
+      dispatch(createTaskSucceeded(resp.data));
+    });
+  };
+}
 
-  export function updateTask(id, params = {}) {
-    return (dispatch, getState) => {
-      const task = getTaskById(getState().tasks.tasks, id);
-      const updatedTask = Object.assign({}, task, params);
+function progressTimerStart(taskId) {
+  return { type: "TIMER_STARTED", payload: { taskId } };
+}
+function progressTimeStops(taskId) {
+  return { type: "TIMER_STOPPED", payload: { taskId } };
+}
+export function updateTask(id, params = {}) {
+  return (dispatch, getState) => {
+    const task = getTaskById(getState().tasks.tasks, id);
+    const updatedTask = Object.assign({}, task, params);
 
-      api.updateTask(id, updatedTask).then((resp) => {
-        dispatch(updateTaskSucceeded(resp.data));
-      });
-    };
-  }
+    api.updateTask(id, updatedTask).then((resp) => {
+      dispatch(updateTaskSucceeded(resp.data));
+      if (resp.data.status === "In Progress") {
+       return dispatch(progressTimerStart(resp.data.id));
+      }
+      if(task.status === "In Progress"){
+       return dispatch(progressTimeStops(resp.data.id));
+      }
+    });
+  };
+}
 
-  function getTaskById(tasks, id) {
-    return tasks.find(task => task.id === id);
-  }
+function getTaskById(tasks, id) {
+  return tasks.find((task) => task.id === id);
+}

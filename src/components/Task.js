@@ -17,8 +17,12 @@ const Task = props => {
                     ))}
                 </select>
             </div>
+            <br />
+            <div className="task-body">
+                {props.task.description}
+                <div className="task-timer">{props.task.timer}s</div>
+                </div>
             <hr />
-            <div className="task-body">{props.task.description}</div>
         </div>
     );
 

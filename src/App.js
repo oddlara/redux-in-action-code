@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createTask, updateTask, fetchTasks } from "./actions";
+import { createTask, updateTask, fetchTasks, fetchTasksStarted } from "./actions";
 import TasksPage from "./components/TasksPage";
 import FlashMessage from "./components/FlashMessage";
 
 class App extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchTasks());
+    this.props.dispatch(fetchTasksStarted());
   }
 
   onCreateTask = ({ title, description }) => {
