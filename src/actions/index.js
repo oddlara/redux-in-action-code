@@ -91,3 +91,8 @@ export function updateTask(id, params = {}) {
 function getTaskById(tasks, id) {
   return tasks.find((task) => task.id === id);
 }
+
+export function filterTasks(searchTerm){
+  console.log("this task has been called, filterTasks");
+  return { type: 'FILTER_TASKS', payload: { searchTerm }};
+}

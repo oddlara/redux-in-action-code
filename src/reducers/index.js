@@ -1,10 +1,17 @@
 const initialState = {
   tasks: [],
   isLoading: false,
-  error: null
-}
+  error: null,
+  searchTerm: ''
+};
+
 export default function tasks(state = initialState, action) {
   switch (action.type) {
+
+    case 'FILTER_TASKS': {
+      return { ...state, searchTerm: action.payload.searchTerm };
+    }
+
     case "FETCH_TASKS_STARTED": {
       return {
         ...state,

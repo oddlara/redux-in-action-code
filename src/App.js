@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createTask, updateTask, fetchTasks, fetchTasksStarted } from "./actions";
+import { createTask, updateTask, fetchTasks, fetchTasksStarted, filterTasks } from "./actions";
 import TasksPage from "./components/TasksPage";
 import FlashMessage from "./components/FlashMessage";
 
@@ -17,6 +17,10 @@ class App extends Component {
     this.props.dispatch(updateTask(id, { status }));
   };
 
+  onSearch = searchTerm => {
+    this.props.dispatch(filterTasks(searchTerm));
+  };
+
   render() {
     return (
       <div className="container">
@@ -25,6 +29,7 @@ class App extends Component {
           <TasksPage
             tasks={this.props.tasks}
             onCreateTask={this.onCreateTask}
+            onSearch={this.onSearch}
             onStatusChange={this.onStatusChange}
             isLoading={this.props.isLoading}
           />
@@ -35,7 +40,13 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { tasks, isLoading, error } = state.tasks;
+  const { isLoading, error, searchTerm } = state.tasks;
+  
+  const tasks = state.tasks.tasks.filter(task => {
+    return task.title.match(new RegExp(searchTerm, 'i'));
+  });
+
+
   return {
     tasks,
     isLoading,
