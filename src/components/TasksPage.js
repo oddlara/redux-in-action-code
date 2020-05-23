@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import TaskList from './TaskList';
-const TASK_STATUSES = ['Unstarted', 'In Progress', 'Completed'];
   
 
 class TasksPage extends Component {
@@ -42,15 +41,15 @@ class TasksPage extends Component {
     this.setState({ showNewCardForm: !this.state.showNewCardForm });
   }
   renderTaskLists() {
-      const  tasks  = this.props.tasks;
-      return TASK_STATUSES.map(status => {
-          const statusTasks = tasks.filter(task => task.status === status);
+      const  { onStatusChange, tasks }  = this.props;
+      return Object.keys(tasks).map(status => {
+          const tasksByStatus = tasks[status];
           return (
           <TaskList 
           key={status} 
           status={status} 
-          tasks={statusTasks}
-          onStatusChange={this.props.onStatusChange } />
+          tasks={tasksByStatus}
+          onStatusChange={onStatusChange } />
           );
     });
   }
