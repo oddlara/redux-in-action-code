@@ -1,25 +1,38 @@
 {
+  "projects": [
+    {
+      "id": 1,
+      "name": "short-term goals"
+    },
+    {
+      "id": 2,
+      "name":"long-term goals"
+    }
+  ],
   "tasks": [
     {
       "id": 1,
       "title": "Learn Redux",
       "description": "The store, actions, and reducers, oh myyy!",
       "status": "Unstarted",
-      "timer": 0
+      "timer": 0,
+      "projectId": 1
     },
     {
       "id": 2,
       "title": "Call The Rock",
       "description": "Just call him",
       "status": "In Progress",
-      "timer": 14
+      "timer": 14,
+      "projectId": 2
     },
     {
       "id": 3,
       "title": "Create Tinder for Food",
       "description": "Just code it. ",
       "status": "In Progress",
-      "timer": 79
+      "timer": 79,
+      "projectId": 1
     }
   ]
 }
