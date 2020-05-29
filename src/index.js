@@ -7,15 +7,17 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import logger from "./middleware/logger";
-import tasksReducer from "./reducers";
+import { projects, page } from "./reducers";
 import * as serviceWorker from "./serviceWorker";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas";
 
 const sagaMiddleware = createSagaMiddleware();
+
 const rootReducer = (state = {}, action) => {
   return {
-    tasks: tasksReducer(state.tasks, action),
+    projects: projects(state.projects, action),
+    page: page(state.page, action)
   };
 };
 

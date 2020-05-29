@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createTask, updateTask, fetchTasks, fetchTasksStarted, filterTasks } from "./actions";
+import { createTask, updateTask, fetchProjects, fetchTasksStarted, filterTasks, setCurrentProjectId } from "./actions";
 import TasksPage from "./components/TasksPage";
+import Header from "./components/Header";
 import FlashMessage from "./components/FlashMessage";
 import { getGroupedAndFilteredTasks } from './reducers';
 
 class App extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchTasksStarted());
+    this.props.dispatch(fetchProjects());
   }
 
   onCreateTask = ({ title, description }) => {
@@ -22,11 +23,19 @@ class App extends Component {
     this.props.dispatch(filterTasks(searchTerm));
   };
 
+  onCurrentProjectChange = e => {
+    this.props.dispatch(setCurrentProjectId(Number(e.target.value)));
+  }
+
   render() {
     return (
       <div className="container">
         {this.props.error && <FlashMessage message={this.props.error} />}
         <div className="main-content">
+          <Header
+            projects={this.props.projects}
+            onCurrentProjectChange={this.onCurrentProjectChange}
+            />
           <TasksPage
             tasks={this.props.tasks}
             onCreateTask={this.onCreateTask}
@@ -41,10 +50,11 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { isLoading, error } = state.tasks;
+  const { isLoading, error, items } = state.projects;
 
   return {
     tasks: getGroupedAndFilteredTasks(state),
+    projects: items,
     isLoading,
     error,
   };

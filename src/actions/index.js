@@ -96,3 +96,44 @@ export function filterTasks(searchTerm){
   console.log("this task has been called, filterTasks");
   return { type: 'FILTER_TASKS', payload: { searchTerm }};
 }
+
+function fetchProjectsStarted(boards){ 
+  return { type: 'FETCH_PROJECTS_STARTED', payload: { boards }};
+};
+
+function fetchProjectsSucceeded(projects){
+  return { type: 'FETCH_PROJECTS_SUCCEEDED', payload: { projects }};
+}
+
+function fetchProjectsFailed(err){
+  return { type: 'FETCH_PROJECTS_FAILED', payload: err};
+}
+
+export function fetchProjects() {
+  return (dispatch, getState) => {
+    dispatch(fetchProjectsStarted());
+    console.log("start fetching projects");
+    return api
+      .fetchProjects()
+      .then(resp => {
+        const projects = resp.data;
+        console.log("result from fetching: ",projects);
+        dispatch(fetchProjectsSucceeded(projects));
+        dispatch(setCurrentProjectId(1));
+      })
+      .catch(err => {
+        console.error(err);
+
+        dispatch(fetchProjectsFailed(err));
+      })
+  }
+}
+
+export function setCurrentProjectId(projectId) {
+  return {
+    type: 'SET_CURRENT_PROJECT_ID',
+    payload: {
+      projectId,
+    },
+  };
+}
