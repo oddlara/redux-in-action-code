@@ -1,4 +1,5 @@
 import * as api from "../api";
+import { normalize, schema } from 'normalizr';
 
 export function fetchTasksStarted() {
   return {
@@ -58,8 +59,10 @@ export function updateTaskSucceeded(task) {
 // }
 
 export function createTask({ title, description, status = "Unstarted" }) {
-  return (dispatch) => {
-    api.createTask({ title, description, status }).then((resp) => {
+  return (dispatch, getState) => {
+    const projectId = getState().page.currentProjectId;
+    const timer = 0;
+    api.createTask({ title, description, status, timer, projectId }).then((resp) => {
       dispatch(createTaskSucceeded(resp.data));
     });
   };
@@ -73,7 +76,7 @@ function progressTimeStops(taskId) {
 }
 export function updateTask(id, params = {}) {
   return (dispatch, getState) => {
-    const task = getTaskById(getState().tasks.tasks, id);
+    const task = getTaskById(getState().tasks.items, id);
     const updatedTask = Object.assign({}, task, params);
 
     api.updateTask(id, updatedTask).then((resp) => {
@@ -89,7 +92,7 @@ export function updateTask(id, params = {}) {
 }
 
 function getTaskById(tasks, id) {
-  return tasks.find((task) => task.id === id);
+  return tasks[id];
 }
 
 export function filterTasks(searchTerm){
@@ -109,25 +112,25 @@ function fetchProjectsFailed(err){
   return { type: 'FETCH_PROJECTS_FAILED', payload: err};
 }
 
-export function fetchProjects() {
-  return (dispatch, getState) => {
-    dispatch(fetchProjectsStarted());
-    console.log("start fetching projects");
-    return api
-      .fetchProjects()
-      .then(resp => {
-        const projects = resp.data;
-        console.log("result from fetching: ",projects);
-        dispatch(fetchProjectsSucceeded(projects));
-        dispatch(setCurrentProjectId(1));
-      })
-      .catch(err => {
-        console.error(err);
+// export function fetchProjects() {
+//   return (dispatch, getState) => {
+//     dispatch(fetchProjectsStarted());
+//     console.log("start fetching projects");
+//     return api
+//       .fetchProjects()
+//       .then(resp => {
+//         const projects = resp.data;
+//         console.log("result from fetching: ",projects);
+//         dispatch(fetchProjectsSucceeded(projects));
+//         dispatch(setCurrentProjectId(1));
+//       })
+//       .catch(err => {
+//         console.error(err);
 
-        dispatch(fetchProjectsFailed(err));
-      })
-  }
-}
+//         dispatch(fetchProjectsFailed(err));
+//       })
+//   }
+// }
 
 export function setCurrentProjectId(projectId) {
   return {
@@ -135,5 +138,41 @@ export function setCurrentProjectId(projectId) {
     payload: {
       projectId,
     },
+  };
+}
+
+function receiveEntities(entities) {
+  return {
+    type: 'RECEIVE_ENTITIES',
+    payload: entities,
+  };
+}
+
+const taskSchema = new schema.Entity('tasks');
+const projectSchema = new schema.Entity('projects', {
+  tasks: [taskSchema],
+});
+
+export function fetchProjects() {
+  return (dispatch, getState) => {
+    dispatch(fetchProjectsStarted());
+
+    return api
+      .fetchProjects()
+      .then(resp => {
+        const projects = resp.data;
+
+        const normalizedData = normalize(projects, [projectSchema]);
+
+        dispatch(receiveEntities(normalizedData));
+
+        if(!getState().page.currentProjectId){
+          const defaultProjectId = projects[0].id;
+          dispatch(setCurrentProjectId(defaultProjectId));
+        }
+      })
+      .catch(err => {
+        fetchProjectsFailed(err);
+      });
   };
 }

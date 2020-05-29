@@ -4,7 +4,7 @@ import { createTask, updateTask, fetchProjects, fetchTasksStarted, filterTasks, 
 import TasksPage from "./components/TasksPage";
 import Header from "./components/Header";
 import FlashMessage from "./components/FlashMessage";
-import { getGroupedAndFilteredTasks } from './reducers';
+import { getGroupedAndFilteredTasks, getProjects } from './reducers';
 
 class App extends Component {
   componentDidMount() {
@@ -50,11 +50,11 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { isLoading, error, items } = state.projects;
+  const { isLoading, error } = state.projects;
 
   return {
     tasks: getGroupedAndFilteredTasks(state),
-    projects: items,
+    projects: getProjects(state),
     isLoading,
     error,
   };

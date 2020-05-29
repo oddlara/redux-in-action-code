@@ -6,8 +6,7 @@ import App from "./App";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import logger from "./middleware/logger";
-import { projects, page } from "./reducers";
+import { projects, tasks, page } from "./reducers";
 import * as serviceWorker from "./serviceWorker";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas";
@@ -17,7 +16,8 @@ const sagaMiddleware = createSagaMiddleware();
 const rootReducer = (state = {}, action) => {
   return {
     projects: projects(state.projects, action),
-    page: page(state.page, action)
+    tasks: tasks(state.tasks, action),
+    page: page(state.page, action),
   };
 };
 
